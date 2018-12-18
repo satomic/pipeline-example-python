@@ -26,19 +26,44 @@ stages:
   steps:
   - runScriptConfig:
       image: satomic/git-box:priv
-      shellScript: "echo \"------------- init workspace -------------\"\nmkdir -p
-        /usr/src/github.com/satomic\nln -s `pwd` /usr/src/github.com/satomic\ncd /usr/src/github.com/satomic\nls
-        -l -h -tr\n\necho \"------------- git clone -------------\"\ngit clone https://github.com/satomic/pipeline-charts.git\nls
-        -l -h -tr\n\necho \"------------- cd to app dir -------------\"\ncd /usr/src/github.com/satomic/pipeline-charts/charts/pipeline-httpserver\nls
-        -l -h -tr\n\necho \"------------- cp & sed scripts -------------\"\ncp -r
-        v0.0.1 v0.0.${CICD_EXECUTION_SEQUENCE}\nsed -i \"s/13/${CICD_EXECUTION_SEQUENCE}/g\"
-        ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml\nsed -i \"s/version: 0.0.1/version:
-        0.0.${CICD_EXECUTION_SEQUENCE}/g\" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml\n\necho
-        \"------------- git config -------------\"\n# init git config\ngit config
-        --global user.email \"yxfdental@126.com\"\ngit config --global user.name \"satomic\"\n\necho
-        \"------------- git add & commit -------------\"\ngit add *\ngit commit -a
-        -m \"version ${CICD_EXECUTION_SEQUENCE}\"\n\necho \"------------- git push
-        -------------\"\nwhoami\ncat ~/.gitconfig \ncat ~/.git-credentials\n\ngit
-        push\n\necho \"------------- success! -------------\""
+      shellScript: |-
+        sudo -i
+
+        echo "------------- init workspace -------------"
+        mkdir -p /usr/src/github.com/satomic
+        ln -s `pwd` /usr/src/github.com/satomic
+        cd /usr/src/github.com/satomic
+        ls -l -h -tr
+
+        echo "------------- git clone -------------"
+        git clone https://github.com/satomic/pipeline-charts.git
+        ls -l -h -tr
+
+        echo "------------- cd to app dir -------------"
+        cd /usr/src/github.com/satomic/pipeline-charts/charts/pipeline-httpserver
+        ls -l -h -tr
+
+        echo "------------- cp & sed scripts -------------"
+        cp -r v0.0.1 v0.0.${CICD_EXECUTION_SEQUENCE}
+        sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml
+        sed -i "s/version: 0.0.1/version: 0.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
+
+        echo "------------- git config -------------"
+        # init git config
+        git config --global user.email "yxfdental@126.com"
+        git config --global user.name "satomic"
+
+        echo "------------- git add & commit -------------"
+        git add *
+        git commit -a -m "version ${CICD_EXECUTION_SEQUENCE}"
+
+        echo "------------- git push -------------"
+        whoami
+        cat ~/.gitconfig
+        cat ~/.git-credentials
+
+        git push
+
+        echo "------------- success! -------------"
 timeout: 60
 notification: {}
