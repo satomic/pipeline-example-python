@@ -46,6 +46,11 @@ stages:
         sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml
         sed -i "s/version: 0.0.1/version: 0.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
 
+        echo "------------- git config -------------"
+        # init git config
+        git config --global user.email "yxfdental@126.com"
+        git config --global user.name "satomic"
+
         echo "------------- git add & commit -------------"
         git add *
         git commit -a -m "version ${CICD_EXECUTION_SEQUENCE}"
