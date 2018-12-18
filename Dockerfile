@@ -1,5 +1,5 @@
 # satomic/python-httpserver
-FROM python:2.7-alpine
+FROM 47.104.65.202/xuefeng/python:2.7-alpine
 WORKDIR /usr/src
 COPY index.html .
 ENTRYPOINT ["python", "-m", "SimpleHTTPServer"]
