@@ -25,7 +25,7 @@ stages:
 - name: catalogs
   steps:
   - runScriptConfig:
-      image: satomic/git-box
+      image: satomic/git-box:priv
       shellScript: |-
         echo "------------- init workspace -------------"
         mkdir -p /usr/src/github.com/satomic
@@ -45,19 +45,6 @@ stages:
         cp -r v0.0.1 v0.0.${CICD_EXECUTION_SEQUENCE}
         sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml
         sed -i "s/version: 0.0.1/version: 0.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
-
-        echo "------------- git config & credentials -------------"
-        # init git config
-        git config --global user.email "yxfdental@126.com"
-        git config --global user.name "satomic"
-
-        # config username password
-        touch ~/.git-credentials
-        cat > ~/.git-credentials << EOF
-        https://satomic:satomic123123@github.com
-        EOF
-
-        git config --global credential.helper store
 
         echo "------------- git add & commit -------------"
         git add *
