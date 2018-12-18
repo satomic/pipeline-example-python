@@ -18,5 +18,9 @@ stages:
       registry: 47.104.65.202
     env:
       PLUGIN_INSECURE: "true"
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
 timeout: 60
 notification: {}
