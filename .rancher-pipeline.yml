@@ -25,7 +25,7 @@ stages:
 - name: catalogs
   steps:
   - runScriptConfig:
-      image: satomic/git-box:priv
+      image: satomic/git-box
       shellScript: |-
         echo "------------- init workspace -------------"
         mkdir -p /usr/src/github.com/satomic
