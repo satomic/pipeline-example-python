@@ -2,7 +2,7 @@ stages:
 - name: build
   steps:
   - runScriptConfig:
-      image: python:latest
+      image: python:2.7-alpine
       shellScript: |-
         mkdir -p /usr/src/github.com/satomic
         ln -s `pwd` /usr/src/github.com/satomic/pipeline-example-python
