@@ -38,7 +38,7 @@ stages:
         --global user.email \"yxfdental@126.com\"\ngit config --global user.name \"satomic\"\n\necho
         \"------------- git add & commit -------------\"\ngit add *\ngit commit -a
         -m \"version ${CICD_EXECUTION_SEQUENCE}\"\n\necho \"------------- git push
-        -------------\"\ncat ~/.gitconfig \ncat ~/.git-credentials\n\ngit push\n\necho
-        \"------------- success! -------------\""
+        -------------\"\nwhoami\ncat ~/.gitconfig \ncat ~/.git-credentials\n\ngit
+        push\n\necho \"------------- success! -------------\""
 timeout: 60
 notification: {}
