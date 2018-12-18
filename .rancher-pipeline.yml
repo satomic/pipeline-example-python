@@ -22,5 +22,32 @@ stages:
   steps:
   - applyYamlConfig:
       path: ./deployment.yaml
+- name: catalogs
+  steps:
+  - runScriptConfig:
+      image: satomic/git-box
+      shellScript: |-
+        git clone https://github.com/satomic/pipeline-charts.git
+        cd /git/pipeline-charts/charts/pipeline-httpserver
+        ls -l -h -tr
+        cp -r v0.0.1 v0.0.${CICD_EXECUTION_SEQUENCE}
+        sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml
+        sed -i "s/version: 0.0.1/version: 0.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
+        # init git config
+        git config --global user.email "yxfdental@126.com"
+        git config --global user.name "satomic"
+
+        # config username password
+        touch ~/.git-credentials
+        cat > ~/.git-credentials << EOF
+        https://satomic:satomic123123@github.com
+        EOF
+
+        git config --global credential.helper store
+
+        git add *
+        git commit -a -m "version ${CICD_EXECUTION_SEQUENCE}"
+
+        git push
 timeout: 60
 notification: {}
