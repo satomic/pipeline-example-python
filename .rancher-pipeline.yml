@@ -51,19 +51,24 @@ stages:
         git config --global user.email "yxfdental@126.com"
         git config --global user.name "satomic"
 
+        # config username password
+        touch ~/.git-credentials
+        cat > ~/.git-credentials << EOF
+        https://satomic:${GIT_PASSWORD}@github.com
+        EOF
+
+        git config --global credential.helper store
+
         echo "------------- git add & commit -------------"
         git add *
         git commit -a -m "version ${CICD_EXECUTION_SEQUENCE}"
 
         echo "------------- git push -------------"
-        whoami
-        cp /root/.gitconfig ~/.gitconfig
-        cp /root/.git-credentials ~/.git-credentials
-        cat ~/.gitconfig
-        cat ~/.git-credentials
-
         git push
 
         echo "------------- success! -------------"
+    envFrom:
+    - sourceName: git-config
+      sourceKey: GIT_PASSWORD
 timeout: 60
 notification: {}
