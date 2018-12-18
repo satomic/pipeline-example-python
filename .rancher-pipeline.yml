@@ -43,6 +43,7 @@ stages:
 
         echo "------------- cp & sed scripts -------------"
         cp -r v0.0.1 v0.0.${CICD_EXECUTION_SEQUENCE}
+        sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/templates/deployment.yaml
         sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml
         sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/values.yaml
         sed -i "s/version: 0.0.1/version: 0.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
