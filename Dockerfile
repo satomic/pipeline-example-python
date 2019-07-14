@@ -1,5 +1,5 @@
 # satomic/python-httpserver
-FROM 47.104.65.202/xuefeng/python:2.7-alpine
+FROM python:2.7-alpine
 WORKDIR /usr/src
 COPY assets ./assets
 COPY index.html .
