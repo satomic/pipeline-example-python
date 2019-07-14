@@ -26,6 +26,7 @@ stages:
   - runScriptConfig:
       image: satomic/git-box
       shellScript: |-
+        echo "haha"
         echo "------------- init workspace -------------"
         mkdir -p /usr/src/github.com/satomic
         ln -s `pwd` /usr/src/github.com/satomic
