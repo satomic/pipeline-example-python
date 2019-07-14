@@ -59,6 +59,7 @@ stages:
         https://satomic:${GIT_PASSWORD}@github.com
         EOF
 
+
         git config --global credential.helper store
 
         echo "------------- git add & commit -------------"
