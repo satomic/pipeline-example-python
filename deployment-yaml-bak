@@ -8,8 +8,8 @@ spec:
   type: NodePort
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 8080
+      targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,4 +31,4 @@ spec:
       - name: pipeline-httpserver
         image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
         ports:
-        - containerPort: 80
+        - containerPort: 8080

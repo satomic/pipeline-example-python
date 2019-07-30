@@ -1,7 +1,5 @@
 # satomic/python-httpserver
-FROM python:2.7-alpine
-WORKDIR /usr/src
+FROM nginx
+WORKDIR /usr/share/nginx/html
 COPY assets ./assets
 COPY index.html .
-ENTRYPOINT ["python", "-m", "SimpleHTTPServer"]
-CMD ["8080"]
