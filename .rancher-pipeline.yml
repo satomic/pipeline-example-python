@@ -13,8 +13,7 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: 47.52.100.138/rancher/pipeline-httpserver:${CICD_EXECUTION_SEQUENCE}
-      pushRemote: true
+      tag: pipeline-httpserver:${CICD_EXECUTION_SEQUENCE}
       registry: 47.52.100.138
     env:
       PLUGIN_INSECURE: "true"
