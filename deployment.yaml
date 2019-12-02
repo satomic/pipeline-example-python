@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: pipeline-httpserver-service
+  namespace: default
 spec:
   selector:
     app: pipeline-httpserver
@@ -14,6 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: default
   name: pipeline-httpserver
   labels:
     app: pipeline-httpserver
