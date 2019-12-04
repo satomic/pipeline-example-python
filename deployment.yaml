@@ -19,18 +19,18 @@ metadata:
   name: pipeline-httpserver
   labels:
     app: pipeline-httpserver
-    version: v1
+    version: develop
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: pipeline-httpserver
-      version: v1
+      version: develop
   template:
     metadata:
       labels:
         app: pipeline-httpserver
-        version: v1
+        version: develop
     spec:
       containers:
       - name: pipeline-httpserver
