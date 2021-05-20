@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: pipeline-httpserver
-  namespace: default
+  namespace: satomicapp
 spec:
   selector:
     app: pipeline-httpserver
@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: satomicapp
   name: pipeline-httpserver
   labels:
     app: pipeline-httpserver
