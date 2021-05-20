@@ -1,0 +1,79 @@
+stages:
+- name: build
+  steps:
+  - runScriptConfig:
+      image: python:2.7-alpine
+      shellScript: |-
+        mkdir -p /usr/src/github.com/satomic
+        ln -s `pwd` /usr/src/github.com/satomic/pipeline-example-python
+        cd /usr/src/github.com/satomic/pipeline-example-python
+        ls -l -h -tr
+- name: push
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: 47.75.124.144/rancher/pipeline-httpserver:${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: 47.75.124.144
+    env:
+      PLUGIN_INSECURE: "true"
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+- name: catalogs
+  steps:
+  - runScriptConfig:
+      image: satomic/git-box
+      shellScript: |-
+        echo "hi"
+        echo "------------- init workspace -------------"
+        mkdir -p /usr/src/github.com/satomic
+        ln -s `pwd` /usr/src/github.com/satomic
+        cd /usr/src/github.com/satomic
+        ls -l -h -tr
+
+        echo "------------- git clone -------------"
+        git clone https://github.com/satomic/pipeline-charts.git
+        ls -l -h -tr
+
+        echo "------------- cd to app dir -------------"
+        cd /usr/src/github.com/satomic/pipeline-charts/charts/pipeline-httpserver
+        ls -l -h -tr
+
+        echo "------------- cp & sed scripts -------------"
+        cp -r v0.0.0 v0.0.${CICD_EXECUTION_SEQUENCE}
+        sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/templates/deployment.yaml
+        sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/questions.yml
+        sed -i "s/13/${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/values.yaml
+        sed -i "s/version: 0.0.0/version: 0.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
+        sed -i "s/appVersion: 1.0.0/appVersion: 1.0.${CICD_EXECUTION_SEQUENCE}/g" ./v0.0.${CICD_EXECUTION_SEQUENCE}/Chart.yaml
+
+        echo "------------- git config -------------"
+        # init git config
+        git config --global user.email "yxfdental@126.com"
+        git config --global user.name "satomic"
+
+        # config username password
+        touch ~/.git-credentials
+        cat > ~/.git-credentials << EOF
+        https://satomic:${GIT_PASSWORD}@github.com
+        EOF
+
+
+        git config --global credential.helper store
+
+        echo "------------- git add & commit -------------"
+        git add *
+        git commit -a -m "version ${CICD_EXECUTION_SEQUENCE}"
+
+        echo "------------- git push -------------"
+        git push
+
+        echo "------------- success! -------------"
+    envFrom:
+    - sourceName: git-config
+      sourceKey: GIT_PASSWORD
+timeout: 60
+notification: {}
