@@ -1,0 +1,22 @@
+name: Run Python Script on Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - master  # 触发条件，可以根据需要修改
+
+jobs:
+  run-python-script:
+    runs-on: self-hosted  # 指定使用 self-hosted runner
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  # 检出仓库代码
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # 选择Python版本，根据需要修改
+
+      - name: Run Python script
+        run: |
+          python main.py  # 运行Python脚本，替换为你的脚本文件名
